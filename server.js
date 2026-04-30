@@ -16,7 +16,7 @@ const io = socketIo(server, {
 const users = new Map();
 
 io.on('connection', (socket) => {
-  console.log(`کاربر جدید وصل شد: ${socket.id}`);
+  console.log(`New user connected: ${socket.id}`);
 
  
   socket.on('user-join', (username) => {
@@ -29,7 +29,7 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('user-joined', {
       username: username,
       message: `${username} joined the chat`,
-      time: new Date().toLocaleTimeString('fa-IR')
+      time: new Date()
     });
 
     sendOnlineUsers();
@@ -46,7 +46,7 @@ io.on('connection', (socket) => {
       io.emit('new-message', {
         username: user.username,
         message: data.message,
-        time: new Date().toLocaleTimeString('fa-IR'),
+        time: new Date(),
         id: socket.id
       });
     }
@@ -97,4 +97,4 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
 });
 
-server.listen(500)
+server.listen(5000)
