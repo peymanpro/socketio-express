@@ -95,6 +95,10 @@ Set `LNASF_MODE=passive` (default), `advisory`, or `adaptive` before starting th
 
 Run LNASF-specific tests with `npm test`; they use deterministic timestamps and compare passive, advisory, adaptive, and cold-start behavior. No latency improvement is claimed without a separate end-to-end benchmark.
 
+
+
+Framework context: [LNASF concept and architecture](https://github.com/peymanpro/learning-native-adaptive-software-framework) · [Technical specification](https://github.com/peymanpro/learning-native-adaptive-software-framework/blob/main/SPECIFICATION.md). This repository implements only the specific LNASF subset documented above; it is not a complete framework implementation.
+
 ## Limitations
 
 This is an in-memory demonstration, not a production chat service. Presence is lost on restart, multiple server instances do not share state, and the application has no authentication, persistence, distributed adapter, or rate limiter. Add these before exposing the service to untrusted users.
