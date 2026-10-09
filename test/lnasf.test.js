@@ -65,3 +65,14 @@ test("the policy cannot suppress a first start or act when its mode is not adapt
   assert.equal(passive.recommendation, "suppress-duplicate");
   assert.equal(coldStart.action, "broadcast");
 });
+
+test("adaptive and passive modes can be compared on the same deterministic typing burst", () => {
+  const passive = new TypingAdaptationService({ mode: "passive" });
+  const adaptive = new TypingAdaptationService({ mode: "adaptive" });
+  const events = Array.from({ length: 30 }, (_, index) => index * 100);
+  const passiveBroadcasts = events.filter((time) => passive.handleStart("same-trace", time).broadcast).length;
+  const adaptiveBroadcasts = events.filter((time) => adaptive.handleStart("same-trace", time).broadcast).length;
+  assert.equal(passiveBroadcasts, events.length);
+  assert.ok(adaptiveBroadcasts < passiveBroadcasts);
+  assert.ok(adaptive.getSnapshot().measurement.typingStartSuppressed > 0);
+});
