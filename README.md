@@ -87,6 +87,14 @@ npm test
 
 Tests use Node's built-in test runner and cover input validation and the HTTP health endpoint. GitHub Actions runs syntax checks and tests on pushes and pull requests.
 
+## LNASF: learning-limited typing burst adaptation
+
+The backend includes a native JavaScript learning component at `lnasf/typing-adaptation.js`. It observes inter-arrival gaps between typing-start events, updates an online frequency model, predicts the likelihood of a fast typing burst, and keeps prediction separate from the action policy. Only duplicate `typing-start` notifications may be suppressed; `typing-stop`, chat messages, validation, and authorization boundaries are never adaptive.
+
+Set `LNASF_MODE=passive` (default), `advisory`, or `adaptive` before starting the server. Passive mode learns while retaining the original broadcast behavior. Advisory mode reports recommendations without applying them. Adaptive mode requires at least five learned gaps and confidence of at least 0.60 before it can suppress a repeated start inside its learned 150–500 ms window; otherwise the deterministic baseline broadcasts the event. `GET /lnasf/metrics` returns model evidence, the latest prediction/decision, and counters, including the observed suppression rate. The model and metrics are process-local and reset on restart.
+
+Run LNASF-specific tests with `npm test`; they use deterministic timestamps and compare passive, advisory, adaptive, and cold-start behavior. No latency improvement is claimed without a separate end-to-end benchmark.
+
 ## Limitations
 
 This is an in-memory demonstration, not a production chat service. Presence is lost on restart, multiple server instances do not share state, and the application has no authentication, persistence, distributed adapter, or rate limiter. Add these before exposing the service to untrusted users.
