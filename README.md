@@ -58,7 +58,7 @@ For example: `CHAT_ALLOWED_ORIGINS=http://localhost:3000,http://127.0.0.1:3000`.
 | Server → client | `welcome` | `{ message, users: string[] }` |
 | Server → client | `user-joined` | `{ username, message, time }` |
 | Server → client | `user-left` | `{ username, message, time }` |
-| Server → client | `new-message` | `{ username, message, time, id }` |
+| Server → client | `new-message` | `{ username, message, time, id, senderId }` |
 | Server → client | `online-users` | `string[]` |
 | Server → client | `user-typing` | `{ username, isTyping }` |
 | Server → client | `chat-error` | `{ code, message }` |
