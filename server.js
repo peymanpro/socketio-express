@@ -3,6 +3,7 @@ const http = require("node:http");
 const { randomUUID } = require("node:crypto");
 const { Server } = require("socket.io");
 const { normalizeMessage, normalizeUsername } = require("./chat-validation");
+const { TypingAdaptationService } = require("./lnasf/typing-adaptation");
 
 const DEFAULT_ALLOWED_ORIGINS = ["http://localhost:3000"];
 
@@ -14,7 +15,7 @@ function getAllowedOrigins(value = process.env.CHAT_ALLOWED_ORIGINS) {
   return origins.length ? origins : DEFAULT_ALLOWED_ORIGINS;
 }
 
-function createChatServer({ allowedOrigins } = {}) {
+function createChatServer({ allowedOrigins, typingMode } = {}) {
   const app = express();
   const server = http.createServer(app);
   const io = new Server(server, {
@@ -25,6 +26,7 @@ function createChatServer({ allowedOrigins } = {}) {
     },
   });
   const users = new Map();
+  const typingAdaptation = new TypingAdaptationService({ mode: typingMode ?? process.env.LNASF_MODE ?? "passive" });
 
   app.get("/", (_request, response) => {
     response.json({
@@ -33,6 +35,10 @@ function createChatServer({ allowedOrigins } = {}) {
       health: "/health",
       socketPath: "/socket.io",
     });
+  });
+
+  app.get("/lnasf/metrics", (_request, response) => {
+    response.json(typingAdaptation.getSnapshot());
   });
 
   app.get("/health", (_request, response) => {
@@ -116,20 +122,26 @@ function createChatServer({ allowedOrigins } = {}) {
       });
     });
 
-    for (const [event, isTyping] of [["typing-start", true], ["typing-stop", false]]) {
-      socket.on(event, () => {
-        const user = users.get(socket.id);
-        if (user) {
-          socket.broadcast.emit("user-typing", { username: user.username, isTyping });
-        }
-      });
-    }
+    socket.on("typing-start", () => {
+      const user = users.get(socket.id);
+      if (!user) return;
+      const decision = typingAdaptation.handleStart(socket.id);
+      if (decision.broadcast) socket.broadcast.emit("user-typing", { username: user.username, isTyping: true });
+    });
+
+    socket.on("typing-stop", () => {
+      const user = users.get(socket.id);
+      if (!user) return;
+      typingAdaptation.handleStop(socket.id);
+      socket.broadcast.emit("user-typing", { username: user.username, isTyping: false });
+    });
 
     socket.on("disconnect", () => {
       const user = users.get(socket.id);
       if (!user) return;
 
       users.delete(socket.id);
+      typingAdaptation.remove(socket.id);
       io.emit("user-left", {
         username: user.username,
         message: `${user.username} left the chat`,
