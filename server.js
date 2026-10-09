@@ -112,6 +112,7 @@ function createChatServer({ allowedOrigins } = {}) {
         message,
         time: new Date().toISOString(),
         id: randomUUID(),
+        senderId: socket.id,
       });
     });
 
