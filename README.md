@@ -21,7 +21,7 @@ A small real-time public-chat backend built with Express and Socket.IO. It demon
 
 ```bash
 npm ci
-npm run dev
+npm run dev (uses native Node.js watch mode)
 ```
 
 The server listens on `http://localhost:5000` by default. Set `PORT` to change the listener port.
@@ -101,7 +101,7 @@ Framework context: [LNASF concept and architecture](https://github.com/peymanpro
 
 ## Dependency audit status
 
-The non-blocking npm audit snapshot from 2026-10-09 reported 11 advisories (1 critical, 7 high, 3 moderate). It includes a critical transitive proxy-addr finding and high-severity findings in the Socket.IO/Engine.IO dependency tree. This sample has not been security-cleared for production; the findings need package-by-package triage and tested lockfile updates. The CI audit report is advisory and does not by itself prove runtime exploitability.
+The development server uses Node.js native watch mode instead of the legacy `nodemon` dependency tree. CI regenerates the npm lockfile, applies non-breaking npm audit fixes, and records any remaining advisories. No `--force` upgrades are used. Review the latest CI audit output before production deployment; reported advisories are not by themselves proof of exploitability, but unresolved critical/high findings require triage.
 
 ## Limitations
 
