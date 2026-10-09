@@ -58,6 +58,8 @@ jobs:
           }
           console.log("NPM_AUDIT_PACKAGES_REPORTED=" + Math.min(rows.length, 20) + "/" + rows.length);
           NODE
+      - name: Enforce high and critical dependency audit
+        run: npm audit --audit-level=high
       - name: Check JavaScript syntax
         run: npm run check
       - name: Run tests

@@ -14,14 +14,15 @@ A small real-time public-chat backend built with Express and Socket.IO. It demon
 
 ## Requirements
 
-- Node.js 20 or later
+- Node.js 22.12 or later (matches the `engines` requirement in `package.json`)
 - npm
 
 ## Run locally
 
 ```bash
 npm ci
-npm run dev (uses native Node.js watch mode)
+npm run dev
+# Uses Node.js native watch mode; nodemon is not required.
 ```
 
 The server listens on `http://localhost:5000` by default. Set `PORT` to change the listener port.
