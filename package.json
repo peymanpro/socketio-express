@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
-    "check": "node --check server.js && node --check chat-validation.js && node --check lnasf/typing-adaptation.js && node --check test/server.test.js && node --check test/lnasf.test.js",
+    "check": "node --check server.js && node --check chat-validation.js && node --check lnasf/typing-adaptation.js && node --check test/server.test.js && node --check test/lnasf.test.js && node --check test/socketio-polling-client.cjs && node --check test/socketio-integration.test.cjs",
     "test": "node --test"
   },
   "dependencies": {
@@ -16,7 +16,12 @@
   "devDependencies": {
     "nodemon": "^3.0.1"
   },
-  "keywords": ["socket.io", "express", "chatroom", "realtime"],
+  "keywords": [
+    "socket.io",
+    "express",
+    "chatroom",
+    "realtime"
+  ],
   "author": "Peyman",
   "license": "MIT"
 }
