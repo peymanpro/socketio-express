@@ -101,7 +101,7 @@ Framework context: [LNASF concept and architecture](https://github.com/peymanpro
 
 ## Dependency audit status
 
-The development server uses Node.js native watch mode instead of the legacy `nodemon` dependency tree. CI regenerated the npm lockfile and applied non-breaking npm audit fixes without `--force`. The post-update GitHub Actions audit snapshot reported one moderate advisory and no high or critical findings. Review the latest audit before production deployment; an advisory alone does not prove runtime exploitability.
+The development server uses Node.js native watch mode instead of the legacy `nodemon` dependency tree. The dependency lockfile pins `qs` to a patched compatible release and was regenerated through CI; no `--force` upgrade was used. The post-update GitHub Actions audit snapshot reported 0 npm advisories. Re-run the audit before deployment because findings change over time; a clean dependency audit alone is not a blanket production-readiness guarantee.
 
 ## Limitations
 
