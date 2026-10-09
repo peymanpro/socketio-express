@@ -85,7 +85,7 @@ npm run check
 npm test
 ```
 
-Tests use Node's built-in test runner and cover input validation and the HTTP health endpoint. GitHub Actions runs syntax checks and tests on pushes and pull requests.
+Tests use Node's built-in test runner for validation, model/policy behavior, and HTTP health/metrics. A live two-client integration test starts the actual server on an ephemeral local port and uses Engine.IO polling to verify that Adaptive mode suppresses duplicate typing-start events while typing-stop and primary chat messages still reach the other client. This is a protocol-level integration check, not a load or user-perceived latency benchmark. GitHub Actions runs syntax checks and all tests on pushes and pull requests.
 
 ## LNASF: learning-limited typing burst adaptation
 
