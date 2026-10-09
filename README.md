@@ -99,6 +99,10 @@ Run LNASF-specific tests with `npm test`; they use deterministic timestamps and 
 
 Framework context: [LNASF concept and architecture](https://github.com/peymanpro/learning-native-adaptive-software-framework) · [Technical specification](https://github.com/peymanpro/learning-native-adaptive-software-framework/blob/main/SPECIFICATION.md). This repository implements only the specific LNASF subset documented above; it is not a complete framework implementation.
 
+## Dependency audit status
+
+The non-blocking npm audit snapshot from 2026-10-09 reported 11 advisories (1 critical, 7 high, 3 moderate). It includes a critical transitive proxy-addr finding and high-severity findings in the Socket.IO/Engine.IO dependency tree. This sample has not been security-cleared for production; the findings need package-by-package triage and tested lockfile updates. The CI audit report is advisory and does not by itself prove runtime exploitability.
+
 ## Limitations
 
 This is an in-memory demonstration, not a production chat service. Presence is lost on restart, multiple server instances do not share state, and the application has no authentication, persistence, distributed adapter, or rate limiter. Add these before exposing the service to untrusted users.
